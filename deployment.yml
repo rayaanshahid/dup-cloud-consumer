@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: dupcloudconsumer
+  name: dupcloudconsumer
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dupcloudconsumer
+    spec:
+      containers:
+        - name: dupcloudconsumer-image2032
+          image: gcr.io/ambient-polymer-228615/dupcloudconsumer-image2032
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080

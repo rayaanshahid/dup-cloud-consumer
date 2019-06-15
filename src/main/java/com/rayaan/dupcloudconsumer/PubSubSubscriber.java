@@ -1,4 +1,5 @@
 package com.rayaan.dupcloudconsumer;
+import BigTable.BTPublisher;
 import com.google.cloud.ServiceOptions;
 import com.google.cloud.pubsub.v1.AckReplyConsumer;
 import com.google.cloud.pubsub.v1.MessageReceiver;
@@ -13,6 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.hadoop.hbase.util.Bytes;
+
 public class PubSubSubscriber {
     // use the default project id
     //private static final String PROJECT_ID = ServiceOptions.getDefaultProjectId();
@@ -40,6 +43,7 @@ public class PubSubSubscriber {
                 PROJECT_ID, subscriptionId);
         //System.out.println("1");
         Subscriber subscriber = null;
+        BTPublisher btPublisher = new BTPublisher();
         //System.out.println("2");
         try {
             // create a subscriber bound to the asynchronous message receiver
@@ -52,10 +56,10 @@ public class PubSubSubscriber {
                 System.out.println("Message Id: " + message.getMessageId());
                 String data = message.getData().toStringUtf8();
                 System.out.println("Data: " + data);
-                String bucket=StringUtils.substringBetween(data, "bucket", ",");
-                System.out.println("bucket: " + bucket);
-                String fileName=StringUtils.substringBetween(data, "name", ",");
-                System.out.println("file name: " + fileName);
+                final byte[] Data = Bytes.toBytes(data);
+                String result = btPublisher.PublishData(Data);
+                System.out.println("Result : " + result);
+
             }
         }finally {
             if (subscriber != null) {

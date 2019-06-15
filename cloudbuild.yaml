@@ -1,0 +1,20 @@
+
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/dupcloudconsumer-image2032', '.']
+    timeout: 500s
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/dupcloudconsumer-image2032']
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['apply','-f','deployment.yml']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=dup-cluster'
+timeout: 500s
+images: ['gcr.io/$PROJECT_ID/dupcloudconsumer-image2032']
+
+
+
+
+
+

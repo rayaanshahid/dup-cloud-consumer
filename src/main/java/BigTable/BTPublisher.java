@@ -28,10 +28,6 @@ public class BTPublisher {
     private static final byte[] COLUMN_FAMILY_NAME = Bytes.toBytes("cf1");
     private static final byte[] COLUMN_NAME = Bytes.toBytes("meter-id");
 
-    // Write some friendly greetings to Cloud Bigtable
-    private static final String[] GREETINGS = {
-            "Hello World!", "Hello Cloud Bigtable!", "Hello HBase!"
-    };
 
     /**
      * Create a table -- first time only.
@@ -55,7 +51,7 @@ public class BTPublisher {
     }
 
     /** Connects to Cloud Bigtable, runs some basic operations and prints the results. */
-    public static String PublishData() {
+    public static String PublishData(byte[] Data) {
 
         StringBuilder result = new StringBuilder();
 
@@ -69,7 +65,7 @@ public class BTPublisher {
 
             // Write some rows to the table
             result.append("Write some greetings to the table<br>");
-            for (int i = 0; i < GREETINGS.length; i++) {
+            for (int i = 0; i < Data.length; i++) {
                 // Each row has a unique row key.
                 //
                 // Note: This example uses sequential numeric IDs for simplicity, but
